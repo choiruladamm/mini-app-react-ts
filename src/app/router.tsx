@@ -1,10 +1,9 @@
 import { NotFoundPage } from '@/components';
 import HomePage from '@/features/homes/pages/home-page';
-import StorePage from '@/features/stores/pages/store-page';
-import TodoPage from '@/features/todos/pages/todo-page';
 import { AppRoutes } from '@/helpers/navigation';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import RootLayout from './root-layout';
+import TaskPage from '@/features/tasks/pages/task-page';
 
 const RootRouter: React.FC = () => {
   const router = createBrowserRouter([
@@ -17,12 +16,8 @@ const RootRouter: React.FC = () => {
           element: <HomePage />,
         },
         {
-          path: AppRoutes.todos,
-          element: <TodoPage />,
-        },
-        {
-          path: AppRoutes.stores,
-          element: <StorePage />,
+          path: AppRoutes.tasks,
+          element: <TaskPage />,
         },
         {
           path: AppRoutes.notfound,

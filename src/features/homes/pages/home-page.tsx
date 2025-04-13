@@ -10,7 +10,6 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
         style={{
           display: 'grid',
           placeItems: 'center',
-          minHeight: '100dvh',
         }}
       >
         Home Page
