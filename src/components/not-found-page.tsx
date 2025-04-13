@@ -1,11 +1,9 @@
-/** @jsxImportSource @emotion/react */
-import { css, keyframes } from '@emotion/react';
-import styled from '@emotion/styled';
-import React from 'react';
 import { ArrowLeft, Ghost, Home } from 'lucide-react';
-import { Button } from '@chakra-ui/react';
+import React from 'react';
+import styled, { keyframes } from 'styled-components';
+import { Button, colors } from './global-styled';
 
-const breakpoints = {
+export const breakpoints = {
   sm: '@media (min-width: 640px)',
   md: '@media (min-width: 768px)',
 };
@@ -81,7 +79,7 @@ const IndigoCircle = styled(DecorativeCircle)`
 const PurpleCircle = styled(DecorativeCircle)`
   width: 8rem;
   height: 8rem;
-  background-color: #d8b4fe;
+  background-color: ${colors.primary[500]};
 
   ${breakpoints.md} {
     width: 12rem;
@@ -89,7 +87,7 @@ const PurpleCircle = styled(DecorativeCircle)`
   }
 `;
 
-const titleStyles = css`
+const Title = styled.h1`
   margin-bottom: 0.5rem;
   font-size: 2.25rem;
   font-weight: bold;
@@ -101,7 +99,7 @@ const titleStyles = css`
   }
 `;
 
-const subtitleStyles = css`
+const Subtitle = styled.h2`
   margin-bottom: 0.75rem;
   font-size: 1.5rem;
   font-weight: 600;
@@ -113,7 +111,7 @@ const subtitleStyles = css`
   }
 `;
 
-const descriptionStyles = css`
+const Description = styled.p`
   margin: 0 auto 1.5rem;
   max-width: 24rem;
   font-size: 0.875rem;
@@ -125,7 +123,7 @@ const descriptionStyles = css`
   }
 `;
 
-const buttonContainerStyles = css`
+const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -148,25 +146,28 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = () => {
           <PurpleCircle />
         </AnimationContainer>
 
-        <h1 css={titleStyles}>404</h1>
-        <h2 css={subtitleStyles}>Page Not Found</h2>
-        <p css={descriptionStyles}>
+        <Title>404</Title>
+        <Subtitle>Page Not Found</Subtitle>
+        <Description>
           Oops! The page you're looking for seems to have vanished into thin
           air. Don't worry, you can find your way back home.
-        </p>
+        </Description>
 
-        <div css={buttonContainerStyles}>
-          <Button onClick={() => window.location.href = '/'}>
-            <Home className="mr-2 h-4 w-4" />
-            Go Home
-          </Button>
-          <Button variant="outline" onClick={() => {
-            window.history.back();
-          }}>
+        <ButtonContainer>
+          <Button
+            $variant="secondary"
+            onClick={() => {
+              window.history.back();
+            }}
+          >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Go Back
           </Button>
-        </div>
+          <Button onClick={() => (window.location.href = '/')}>
+            <Home className="mr-2 h-4 w-4" />
+            Go Home
+          </Button>
+        </ButtonContainer>
       </ContentWrapper>
     </PageContainer>
   );

@@ -1,7 +1,7 @@
 export const AppRoutes = {
   home: '/',
 
-  todos: '/todos',
+  tasks: '/tasks',
 
   stores: '/stores',
 
