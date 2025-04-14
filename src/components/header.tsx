@@ -3,7 +3,7 @@ import { setSearchQuery } from '@/features/shops/store/product-slice';
 import { AppRoutes } from '@/helpers/navigation';
 import { useAppDispatch } from '@/hooks/use-app-dispatch';
 import { useAppSelector } from '@/hooks/use-app-selector';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Badge, Container, Flex, theme } from './global-styled';
@@ -22,21 +22,21 @@ const Logo = styled.div`
   font-size: 20px;
   font-weight: 700;
   color: ${theme.colors.primary[600]};
-  flex-wrap: nowrap;
-  /* width: 200px; */
   white-space: nowrap;
-  
   cursor: pointer;
 `;
 
 const SearchBar = styled.div`
   flex: 1;
-  /* max-width: 600px; */
+  max-width: 600px;
+  margin: 0 30px;
   position: relative;
+  width: 100%;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     max-width: 100%;
-    /* margin: 0 10px; */
+    width: 100%;
+    margin: 0;
   }
 `;
 
@@ -45,12 +45,14 @@ const WrapperMobile = styled.div`
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     display: flex;
+    width: 100%;
+    padding-top: 0.7rem;
   }
 `;
 
 const WrapperDesktop = styled.div`
   display: block;
-  width: 100%;
+  flex: 1;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     display: none;
@@ -167,46 +169,54 @@ const MobileSearchContainer = styled.div`
   box-shadow: ${theme.shadows.large};
 `;
 
-const MobileSearchForm = styled.form`
-  width: 100%;
-  display: flex;
-`;
-
 const MobileSearchInput = styled(SearchInput)`
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-`;
-
-const MobileSearchButton2 = styled.button`
-  background-color: ${theme.colors.primary[500]};
-  color: white;
-  border: none;
-  border-top-right-radius: ${theme.radius.default};
-  border-bottom-right-radius: ${theme.radius.default};
-  padding: 0 16px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${theme.colors.primary[600]};
-  }
+  border-radius: ${theme.radius.default};
 `;
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   const { items } = useAppSelector((state) => state.cart);
   const [searchValue, setSearchValue] = useState('');
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   const cartItemCount = items.reduce((total, item) => total + item.quantity, 0);
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    dispatch(setSearchQuery(searchValue));
-    navigate(AppRoutes.shopProduct);
-    setMobileSearchOpen(false);
+  // Debounce function
+  const debounce = <T extends (...args: any[]) => void>(
+    func: T,
+    delay: number
+  ) => {
+    let timeoutId: any
+    return (...args: Parameters<T>) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func(...args), delay);
+    };
   };
+
+  // Debounced search dispatch
+  const debouncedSearch = useCallback(
+    debounce((query: string) => {
+      dispatch(setSearchQuery(query));
+      if (query) {
+        navigate(AppRoutes.shop);
+      }
+    }, 300),
+    [dispatch, navigate]
+  );
+
+  // Handle input change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchValue(value);
+    debouncedSearch(value);
+  };
+
+  // Close mobile search when navigating
+  useEffect(() => {
+    setMobileSearchOpen(false);
+  }, [navigate]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -220,15 +230,14 @@ export const Header: React.FC = () => {
           <Logo onClick={() => navigate(AppRoutes.shop)}>My Shop</Logo>
 
           <WrapperDesktop>
-            <SearchBar style={{ maxWidth: '600px', margin: '0 30px' }}>
-              <form onSubmit={handleSearchSubmit}>
-                <SearchInput
-                  type="text"
-                  placeholder="Cari di My Shop..."
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                />
-              </form>
+            <SearchBar style={{width: '100%'}}>
+              <SearchInput
+                type="text"
+                placeholder="Cari di My Shop..."
+                value={searchValue}
+                onChange={handleSearchChange}
+                style={{ width: '100%' }}
+              />
             </SearchBar>
           </WrapperDesktop>
 
@@ -251,6 +260,23 @@ export const Header: React.FC = () => {
               </svg>
               {cartItemCount > 0 && <CartBadge>{cartItemCount}</CartBadge>}
             </CartIcon>
+
+            <MobileSearchButton onClick={() => setMobileSearchOpen(true)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+            </MobileSearchButton>
 
             {isAuthenticated ? (
               <Flex align="center" gap="12px">
@@ -286,58 +312,29 @@ export const Header: React.FC = () => {
         </Flex>
 
         <WrapperMobile>
-          <div
-            style={{
-              width: '100%',
-              margin: '0 auto',
-              paddingTop: '0.7rem',
-            }}
-          >
-            <SearchBar>
-              <form onSubmit={handleSearchSubmit}>
-                <SearchInput
-                  type="text"
-                  placeholder="Cari di My Shop..."
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                />
-              </form>
-            </SearchBar>
-          </div>
+          <SearchBar>
+            <SearchInput
+              type="text"
+              placeholder="Cari di My Shop..."
+              value={searchValue}
+              onChange={handleSearchChange}
+            />
+          </SearchBar>
         </WrapperMobile>
       </Container>
 
-      {/* Mobile Search Overlay */}
       <MobileSearchOverlay
         isOpen={mobileSearchOpen}
         onClick={() => setMobileSearchOpen(false)}
       >
         <MobileSearchContainer onClick={(e) => e.stopPropagation()}>
-          <MobileSearchForm onSubmit={handleSearchSubmit}>
-            <MobileSearchInput
-              type="text"
-              placeholder="Cari di My Shop..."
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              autoFocus
-            />
-            <MobileSearchButton2 type="submit">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </svg>
-            </MobileSearchButton2>
-          </MobileSearchForm>
+          <MobileSearchInput
+            type="text"
+            placeholder="Cari di My Shop..."
+            value={searchValue}
+            onChange={handleSearchChange}
+            autoFocus
+          />
         </MobileSearchContainer>
       </MobileSearchOverlay>
     </HeaderContainer>

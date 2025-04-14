@@ -4,7 +4,6 @@ export const AppRoutes = {
   tasks: '/tasks',
 
   shop: '/shop',
-  shopProduct: '/shop/products',
   shopDetail: (id: string | number) => `/shop/${id}`,
 
   cart: '/cart',
