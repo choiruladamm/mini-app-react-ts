@@ -33,10 +33,6 @@ const RootRouter: React.FC = () => {
               element: <ProductListPage />,
             },
             {
-              path: AppRoutes.shopProduct,
-              element: <ProductListPage />,
-            },
-            {
               path: AppRoutes.shopDetail(':id'),
               element: (
                 <Guards>
