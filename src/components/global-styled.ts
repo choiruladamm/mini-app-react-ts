@@ -54,6 +54,7 @@ export const colors = {
     700: '#334155',
     800: '#1e293b',
   },
+  white: "#FFFFFF",
   success: {
     light: '#dcfce7',
     main: '#10b981',
