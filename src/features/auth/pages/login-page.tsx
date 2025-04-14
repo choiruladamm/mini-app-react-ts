@@ -9,6 +9,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '../../../helpers/navigation';
 import LoginForm from '../components/login-form';
+import { SiteHead } from '@/components';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -22,15 +23,17 @@ const LoginPage: React.FC = () => {
   }, [isAuthenticated, navigate]);
 
   return (
-    <PageContainer>
-      <Container>
-        <CenteredContainer>
-          <AuthCard>
-            <LoginForm />
-          </AuthCard>
-        </CenteredContainer>
-      </Container>
-    </PageContainer>
+    <SiteHead title="Login">
+      <PageContainer>
+        <Container>
+          <CenteredContainer>
+            <AuthCard>
+              <LoginForm />
+            </AuthCard>
+          </CenteredContainer>
+        </Container>
+      </PageContainer>
+    </SiteHead>
   );
 };
 

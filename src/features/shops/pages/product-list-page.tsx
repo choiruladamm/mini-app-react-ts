@@ -8,6 +8,7 @@ import { useAppSelector } from '@/hooks/use-app-selector';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { ProductCard, ProductFilter } from '../components';
+import { SiteHead } from '@/components';
 
 const ProductsHeader = styled.div`
   margin-bottom: 24px;
@@ -52,7 +53,7 @@ const ProductListPage: React.FC = () => {
   };
 
   return (
-    <>
+    <SiteHead title="My Shop">
       <ProductFilter />
       <PageContainer>
         <Container>
@@ -77,7 +78,7 @@ const ProductListPage: React.FC = () => {
           )}
         </Container>
       </PageContainer>
-    </>
+    </SiteHead>
   );
 };
 
