@@ -3,39 +3,39 @@ import styled from 'styled-components';
 import { setCategory, setSortOrder } from '../store/product-slice';
 import { useAppDispatch } from '@/hooks/use-app-dispatch';
 import { useAppSelector } from '@/hooks/use-app-selector';
-import { Select } from '@/components/global-styled';
+import { Select, theme } from '@/components/global-styled';
 
 const FilterContainer = styled.div`
-  background-color: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 0.75rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  position: sticky;
-  top: 64px;
-  z-index: 10;
+  gap: 16px;
+  /* background-color: ${theme.colors.white}; */
+  border-bottom: 1px solid ${theme.colors.gray[200]};
 
   @media (max-width: 768px) {
     flex-direction: column;
-    gap: 0.75rem;
     align-items: flex-start;
+    padding: 16px;
   }
 `;
 
 const CategorySection = styled.div`
   display: flex;
-  gap: 0.75rem;
+  gap: 8px;
   overflow-x: auto;
-  padding-bottom: 0.25rem;
+  padding-bottom: 4px;
 
   &::-webkit-scrollbar {
     height: 4px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #cbd5e1;
+    background-color: ${theme.colors.gray[300]};
     border-radius: 4px;
   }
 
@@ -47,47 +47,69 @@ const CategorySection = styled.div`
 const SortingSection = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
 
   @media (max-width: 768px) {
     width: 100%;
-    justify-content: flex-start;
   }
 `;
 
 const CategoryButton = styled.button<{ isActive: boolean }>`
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
   white-space: nowrap;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  border: 1px solid ${theme.colors.gray[300]};
+  background-color: ${({ isActive }) =>
+    isActive ? theme.colors.primary[600] : theme.colors.white};
+  color: ${({ isActive }) =>
+    isActive ? theme.colors.white : theme.colors.gray[700]};
 
-  ${({ isActive }) =>
-    isActive
-      ? `
-      background-color: #3b82f6;
-      color: #ffffff;
-      &:hover {
-        background-color: #2563eb;
-      }
-    `
-      : `
-      background-color: #f8fafc;
-      color: #64748b;
-      border: 1px solid #cbd5e1;
-      &:hover {
-        background-color: #f1f5f9;
-      }
-    `}
+  &:hover {
+    background-color: ${({ isActive }) =>
+      isActive ? theme.colors.primary[600] : theme.colors.gray[100]};
+  }
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
 `;
 
 const SortLabel = styled.span`
-  font-size: 0.875rem;
-  color: #475569;
-  font-weight: 600;
+  font-size: 14px;
+  color: ${theme.colors.gray[700]};
+  font-weight: 500;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
 `;
 
-// Available categories
+const SortSelect = styled.select`
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid ${theme.colors.gray[300]};
+  background-color: ${theme.colors.white};
+  font-size: 14px;
+  color: ${theme.colors.gray[700]};
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: ${theme.colors.primary[500]};
+  }
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+    padding: 6px 10px;
+    width: 100%;
+  }
+`;
+
 const categories = ['all', 'beauty', 'fragrances', 'furniture'];
 
 export const ProductFilter: React.FC = () => {
@@ -126,7 +148,7 @@ export const ProductFilter: React.FC = () => {
       </CategorySection>
 
       <SortingSection>
-        <SortLabel>Sort by:</SortLabel>
+        <SortLabel style={{whiteSpace: 'nowrap'}}>Sort by:</SortLabel>
         <Select value={sortOrder} onChange={handleSortChange}>
           <option value="none">Featured</option>
           <option value="price-asc">Price: Low to High</option>
