@@ -12,6 +12,7 @@ import {
 import { useAppDispatch } from '@/hooks/use-app-dispatch';
 import { useAppSelector } from '@/hooks/use-app-selector';
 import { addToCart } from '@/features/carts/store/cart-slice';
+import { SiteHead } from '@/components';
 
 const Breadcrumbs = styled.div`
   display: flex;
@@ -340,112 +341,114 @@ const ProductDetailPage: React.FC = () => {
   const discountedPrice = getDiscountedPrice();
 
   return (
-    <PageContainer>
-      <Container>
-        <Breadcrumbs>
-          <BreadcrumbLink onClick={() => navigate(AppRoutes.shop)}>
-            Home
-          </BreadcrumbLink>
-          <BreadcrumbSeparator>/</BreadcrumbSeparator>
-          <BreadcrumbLink onClick={() => navigate(AppRoutes.shop)}>
-            Products
-          </BreadcrumbLink>
-          <BreadcrumbSeparator>/</BreadcrumbSeparator>
-          <span>{title}</span>
-        </Breadcrumbs>
+    <SiteHead title={product.title}>
+      <PageContainer>
+        <Container>
+          <Breadcrumbs>
+            <BreadcrumbLink onClick={() => navigate(AppRoutes.shop)}>
+              Home
+            </BreadcrumbLink>
+            <BreadcrumbSeparator>/</BreadcrumbSeparator>
+            <BreadcrumbLink onClick={() => navigate(AppRoutes.shop)}>
+              Products
+            </BreadcrumbLink>
+            <BreadcrumbSeparator>/</BreadcrumbSeparator>
+            <span>{title}</span>
+          </Breadcrumbs>
 
-        <ProductLayout>
-          {/* Images Section */}
-          <ImagesContainer>
-            <MainImage src={selectedImage || thumbnail} alt={title} />
-            {images && images.length > 1 && (
-              <ThumbnailsContainer>
-                {images.map((image, index) => (
-                  <Thumbnail
-                    key={index}
-                    src={image}
-                    alt={`${title} thumbnail ${index + 1}`}
-                    isActive={image === selectedImage}
-                    onClick={() => setSelectedImage(image)}
-                  />
-                ))}
-              </ThumbnailsContainer>
-            )}
-          </ImagesContainer>
-
-          {/* Product Info Section */}
-          <ProductInfo>
-            <ProductTitle>{title}</ProductTitle>
-
-            {brand && <ProductBrand>Brand: {brand}</ProductBrand>}
-
-            <ProductPrice>
-              ${discountedPrice ? discountedPrice : price.toFixed(2)}
-              {discountedPrice && (
-                <>
-                  <OldPrice>${price.toFixed(2)}</OldPrice>
-                  <Discount>{Math.round(discountPercentage!)}% OFF</Discount>
-                </>
+          <ProductLayout>
+            {/* Images Section */}
+            <ImagesContainer>
+              <MainImage src={selectedImage || thumbnail} alt={title} />
+              {images && images.length > 1 && (
+                <ThumbnailsContainer>
+                  {images.map((image, index) => (
+                    <Thumbnail
+                      key={index}
+                      src={image}
+                      alt={`${title} thumbnail ${index + 1}`}
+                      isActive={image === selectedImage}
+                      onClick={() => setSelectedImage(image)}
+                    />
+                  ))}
+                </ThumbnailsContainer>
               )}
-            </ProductPrice>
+            </ImagesContainer>
 
-            <StockInfo isLowStock={isLowStock}>
-              {isOutOfStock
-                ? 'Out of stock'
-                : isLowStock
-                ? `Only ${stock} left in stock - order soon`
-                : `In stock (${stock} available)`}
-            </StockInfo>
+            {/* Product Info Section */}
+            <ProductInfo>
+              <ProductTitle>{title}</ProductTitle>
 
-            <ProductDescription>{description}</ProductDescription>
+              {brand && <ProductBrand>Brand: {brand}</ProductBrand>}
 
-            {!isOutOfStock && (
-              <QuantitySelector>
-                <QuantityLabel>Quantity:</QuantityLabel>
-                <QuantityControl>
-                  <QuantityButton
-                    onClick={() => handleQuantityChange(quantity - 1)}
-                    disabled={quantity <= 1}
-                  >
-                    -
-                  </QuantityButton>
-                  <QuantityInput
-                    type="number"
-                    value={quantity}
-                    min={1}
-                    max={stock}
-                    onChange={handleInputChange}
-                  />
-                  <QuantityButton
-                    onClick={() => handleQuantityChange(quantity + 1)}
-                    disabled={quantity >= stock}
-                  >
-                    +
-                  </QuantityButton>
-                </QuantityControl>
-              </QuantitySelector>
-            )}
+              <ProductPrice>
+                ${discountedPrice ? discountedPrice : price.toFixed(2)}
+                {discountedPrice && (
+                  <>
+                    <OldPrice>${price.toFixed(2)}</OldPrice>
+                    <Discount>{Math.round(discountPercentage!)}% OFF</Discount>
+                  </>
+                )}
+              </ProductPrice>
 
-            <Flex gap="16px">
-              <Button
-                $variant="primary"
-                onClick={handleAddToCart}
-                disabled={isOutOfStock}
-              >
-                {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
-              </Button>
+              <StockInfo isLowStock={isLowStock}>
+                {isOutOfStock
+                  ? 'Out of stock'
+                  : isLowStock
+                  ? `Only ${stock} left in stock - order soon`
+                  : `In stock (${stock} available)`}
+              </StockInfo>
 
-              <Button
-                $variant="secondary"
-                onClick={() => navigate(AppRoutes.shop)}
-              >
-                Continue Shopping
-              </Button>
-            </Flex>
-          </ProductInfo>
-        </ProductLayout>
-      </Container>
-    </PageContainer>
+              <ProductDescription>{description}</ProductDescription>
+
+              {!isOutOfStock && (
+                <QuantitySelector>
+                  <QuantityLabel>Quantity:</QuantityLabel>
+                  <QuantityControl>
+                    <QuantityButton
+                      onClick={() => handleQuantityChange(quantity - 1)}
+                      disabled={quantity <= 1}
+                    >
+                      -
+                    </QuantityButton>
+                    <QuantityInput
+                      type="number"
+                      value={quantity}
+                      min={1}
+                      max={stock}
+                      onChange={handleInputChange}
+                    />
+                    <QuantityButton
+                      onClick={() => handleQuantityChange(quantity + 1)}
+                      disabled={quantity >= stock}
+                    >
+                      +
+                    </QuantityButton>
+                  </QuantityControl>
+                </QuantitySelector>
+              )}
+
+              <Flex gap="16px">
+                <Button
+                  $variant="primary"
+                  onClick={handleAddToCart}
+                  disabled={isOutOfStock}
+                >
+                  {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+                </Button>
+
+                <Button
+                  $variant="secondary"
+                  onClick={() => navigate(AppRoutes.shop)}
+                >
+                  Continue Shopping
+                </Button>
+              </Flex>
+            </ProductInfo>
+          </ProductLayout>
+        </Container>
+      </PageContainer>
+    </SiteHead>
   );
 };
 

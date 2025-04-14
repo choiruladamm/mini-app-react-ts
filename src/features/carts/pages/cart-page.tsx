@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { AppRoutes } from '../../../helpers/navigation';
 import CartItem from '../components/cart-item';
+import { SiteHead } from '@/components';
 
 const CartHeader = styled.div`
   margin-bottom: 24px;
@@ -74,75 +75,77 @@ const CartPage: React.FC = () => {
   const total = subtotal + shipping + tax;
 
   return (
-    <PageContainer>
-      <Container>
-        <CartHeader>
-          <CartTitle>Your Cart</CartTitle>
-        </CartHeader>
+    <SiteHead title="Cart">
+      <PageContainer>
+        <Container>
+          <CartHeader>
+            <CartTitle>Your Cart</CartTitle>
+          </CartHeader>
 
-        {items.length === 0 ? (
-          <CartEmpty>
-            <h3>Your cart is empty</h3>
-            <CartEmptyText>
-              Looks like you haven't added any products to your cart yet.
-            </CartEmptyText>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <Button
-                $variant="primary"
-                onClick={() => navigate(AppRoutes.shop)}
+          {items.length === 0 ? (
+            <CartEmpty>
+              <h3>Your cart is empty</h3>
+              <CartEmptyText>
+                Looks like you haven't added any products to your cart yet.
+              </CartEmptyText>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
               >
-                Continue Shopping
-              </Button>
-            </div>
-          </CartEmpty>
-        ) : (
-          <Flex gap="24px" direction="column">
-            <CartItems>
-              {items.map((item) => (
-                <CartItem key={item.productId} item={item} />
-              ))}
-            </CartItems>
+                <Button
+                  $variant="primary"
+                  onClick={() => navigate(AppRoutes.shop)}
+                >
+                  Continue Shopping
+                </Button>
+              </div>
+            </CartEmpty>
+          ) : (
+            <Flex gap="24px" direction="column">
+              <CartItems>
+                {items.map((item) => (
+                  <CartItem key={item.productId} item={item} />
+                ))}
+              </CartItems>
 
-            <CartSummary>
-              <h3>Order Summary</h3>
-              <SummaryRow>
-                <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
-              </SummaryRow>
-              <SummaryRow>
-                <span>Shipping</span>
-                <span>${shipping.toFixed(2)}</span>
-              </SummaryRow>
-              <SummaryRow>
-                <span>Tax</span>
-                <span>${tax.toFixed(2)}</span>
-              </SummaryRow>
-              <SummaryRow total>
-                <span>Total</span>
-                <span>${total.toFixed(2)}</span>
-              </SummaryRow>
+              <CartSummary>
+                <h3>Order Summary</h3>
+                <SummaryRow>
+                  <span>Subtotal</span>
+                  <span>${subtotal.toFixed(2)}</span>
+                </SummaryRow>
+                <SummaryRow>
+                  <span>Shipping</span>
+                  <span>${shipping.toFixed(2)}</span>
+                </SummaryRow>
+                <SummaryRow>
+                  <span>Tax</span>
+                  <span>${tax.toFixed(2)}</span>
+                </SummaryRow>
+                <SummaryRow total>
+                  <span>Total</span>
+                  <span>${total.toFixed(2)}</span>
+                </SummaryRow>
 
-              <CheckoutButton $variant="primary" disabled>
-                Checkout
-              </CheckoutButton>
+                <CheckoutButton $variant="primary" disabled>
+                  Checkout
+                </CheckoutButton>
 
-              <Button
-                $variant="secondary"
-                style={{ width: '100%', marginTop: '8px' }}
-                onClick={() => navigate(AppRoutes.shop)}
-              >
-                Continue Shopping
-              </Button>
-            </CartSummary>
-          </Flex>
-        )}
-      </Container>
-    </PageContainer>
+                <Button
+                  $variant="secondary"
+                  style={{ width: '100%', marginTop: '8px' }}
+                  onClick={() => navigate(AppRoutes.shop)}
+                >
+                  Continue Shopping
+                </Button>
+              </CartSummary>
+            </Flex>
+          )}
+        </Container>
+      </PageContainer>
+    </SiteHead>
   );
 };
 
