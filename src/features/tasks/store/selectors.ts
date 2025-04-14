@@ -2,19 +2,19 @@ import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '@/stores';
 import { Task } from '@/types/task';
 
-export const selectTasks = (state: RootState) => state.tasks;
-export const selectFilter = (state: RootState) => state.filter;
-export const selectSortBy = (state: RootState) => state.sortBy;
-export const selectSortOrder = (state: RootState) => state.sortOrder;
+export const selectTasks = (state: RootState) => state.tasks.tasks; // Ambil tasks dari state.tasks
+export const selectFilter = (state: RootState) => state.tasks.filter; // Ambil filter dari state.tasks
+export const selectSortBy = (state: RootState) => state.tasks.sortBy; // Ambil sortBy dari state.tasks
+export const selectSortOrder = (state: RootState) => state.tasks.sortOrder; // Ambil sortOrder dari state.tasks
 
 export const selectFilteredTasks = createSelector(
   [selectTasks, selectFilter],
   (tasks, filter) => {
     switch (filter) {
       case 'active':
-        return tasks.filter((task) => !task.completed);
+        return tasks.filter((task: Task) => !task.completed);
       case 'completed':
-        return tasks.filter((task) => task.completed);
+        return tasks.filter((task: Task) => task.completed);
       default:
         return tasks;
     }
@@ -53,12 +53,12 @@ export const selectSortedTasks = createSelector(
 
 export const selectTasksCount = createSelector([selectTasks], (tasks) => ({
   total: tasks.length,
-  active: tasks.filter((task) => !task.completed).length,
-  completed: tasks.filter((task) => task.completed).length,
+  active: tasks.filter((task: Task) => !task.completed).length,
+  completed: tasks.filter((task: Task) => task.completed).length,
 }));
 
 export const selectOverdueTasks = createSelector([selectTasks], (tasks) =>
-  tasks.filter((task) => {
+  tasks.filter((task: Task) => {
     const dueDate = new Date(task.dueDate);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
