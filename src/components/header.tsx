@@ -311,7 +311,7 @@ export const Header: React.FC = () => {
           </ActionButtons>
         </Flex>
 
-        <WrapperMobile>
+        {/* <WrapperMobile>
           <SearchBar>
             <SearchInput
               type="text"
@@ -320,7 +320,7 @@ export const Header: React.FC = () => {
               onChange={handleSearchChange}
             />
           </SearchBar>
-        </WrapperMobile>
+        </WrapperMobile> */}
       </Container>
 
       <MobileSearchOverlay
