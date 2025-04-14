@@ -343,7 +343,7 @@ const ProductDetailPage: React.FC = () => {
     <PageContainer>
       <Container>
         <Breadcrumbs>
-          <BreadcrumbLink onClick={() => navigate(AppRoutes.home)}>
+          <BreadcrumbLink onClick={() => navigate(AppRoutes.shop)}>
             Home
           </BreadcrumbLink>
           <BreadcrumbSeparator>/</BreadcrumbSeparator>
