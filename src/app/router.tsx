@@ -1,5 +1,9 @@
 import { Guards, NotFoundPage } from '@/components';
+import LoginPage from '@/features/auth/pages/login-page';
+import RegisterPage from '@/features/auth/pages/register-page';
+import CartPage from '@/features/carts/pages/cart-page';
 import HomePage from '@/features/home/pages/home-page';
+import ProductDetailPage from '@/features/shops/pages/product-detail-page';
 import ProductListPage from '@/features/shops/pages/product-list-page';
 import TaskPage from '@/features/tasks/pages/task-page';
 import { AppRoutes } from '@/helpers/navigation';
@@ -36,7 +40,7 @@ const RootRouter: React.FC = () => {
               path: AppRoutes.shopDetail(':id'),
               element: (
                 <Guards>
-                  <div>ProductDetailPage</div>
+                  <ProductDetailPage />
                 </Guards>
               ),
             },
@@ -44,13 +48,20 @@ const RootRouter: React.FC = () => {
               path: AppRoutes.cart,
               element: (
                 <Guards>
-                  <div>CartPage</div>
+                  <CartPage />
                 </Guards>
               ),
             },
           ],
         },
-
+        {
+          path: AppRoutes.register,
+          element: <RegisterPage />,
+        },
+        {
+          path: AppRoutes.login,
+          element: <LoginPage />,
+        },
         {
           path: AppRoutes.notfound,
           element: <NotFoundPage />,

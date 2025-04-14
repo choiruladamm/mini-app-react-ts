@@ -196,7 +196,7 @@ export const Header: React.FC = () => {
     <HeaderContainer>
       <Container>
         <Flex justify="space-between" align="center">
-          <Logo onClick={() => navigate(AppRoutes.home)}>My Shop</Logo>
+          <Logo onClick={() => navigate(AppRoutes.shop)}>My Shop</Logo>
 
           <SearchBar>
             <form onSubmit={handleSearchSubmit}>

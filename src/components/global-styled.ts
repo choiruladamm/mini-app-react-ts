@@ -325,3 +325,20 @@ export const Flex = styled.div<{
   gap: ${(props) => props.gap || '0'};
   flex-wrap: ${(props) => props.wrap || 'nowrap'};
 `;
+
+export const FormGroup = styled.div`
+  margin-bottom: 20px;
+`;
+
+export const Label = styled.label`
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: ${theme.colors.gray[700]};
+`;
+
+export const ErrorMessage = styled.p`
+  color: ${theme.colors.error.main};
+  font-size: 14px;
+  margin-top: 4px;
+`;
