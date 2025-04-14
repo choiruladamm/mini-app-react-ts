@@ -22,17 +22,38 @@ const Logo = styled.div`
   font-size: 20px;
   font-weight: 700;
   color: ${theme.colors.primary[600]};
+  flex-wrap: nowrap;
+  /* width: 200px; */
+  white-space: nowrap;
+  
   cursor: pointer;
 `;
 
 const SearchBar = styled.div`
   flex: 1;
-  max-width: 600px;
+  /* max-width: 600px; */
   position: relative;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     max-width: 100%;
-    margin: 0 10px;
+    /* margin: 0 10px; */
+  }
+`;
+
+const WrapperMobile = styled.div`
+  display: none;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    display: flex;
+  }
+`;
+
+const WrapperDesktop = styled.div`
+  display: block;
+  width: 100%;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    display: none;
   }
 `;
 
@@ -198,16 +219,18 @@ export const Header: React.FC = () => {
         <Flex justify="space-between" align="center">
           <Logo onClick={() => navigate(AppRoutes.shop)}>My Shop</Logo>
 
-          <SearchBar>
-            <form onSubmit={handleSearchSubmit}>
-              <SearchInput
-                type="text"
-                placeholder="Cari di My Shop..."
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-              />
-            </form>
-          </SearchBar>
+          <WrapperDesktop>
+            <SearchBar style={{ maxWidth: '600px', margin: '0 30px' }}>
+              <form onSubmit={handleSearchSubmit}>
+                <SearchInput
+                  type="text"
+                  placeholder="Cari di My Shop..."
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                />
+              </form>
+            </SearchBar>
+          </WrapperDesktop>
 
           <ActionButtons>
             <CartIcon onClick={() => navigate(AppRoutes.cart)}>
@@ -261,6 +284,27 @@ export const Header: React.FC = () => {
             )}
           </ActionButtons>
         </Flex>
+
+        <WrapperMobile>
+          <div
+            style={{
+              width: '100%',
+              margin: '0 auto',
+              paddingTop: '0.7rem',
+            }}
+          >
+            <SearchBar>
+              <form onSubmit={handleSearchSubmit}>
+                <SearchInput
+                  type="text"
+                  placeholder="Cari di My Shop..."
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                />
+              </form>
+            </SearchBar>
+          </div>
+        </WrapperMobile>
       </Container>
 
       {/* Mobile Search Overlay */}
