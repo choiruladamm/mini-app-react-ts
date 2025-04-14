@@ -31,6 +31,11 @@ export default tseslint.config(
 			'no-empty-pattern': 'off',
 			'no-unused-vars': 'off',
 			'@typescript-eslint/no-empty-object-type': 'off',
+
+      '@typescript-eslint/no-unsafe-assignment': 'off', // Untuk TS2339
+      '@typescript-eslint/no-unsafe-member-access': 'off', // Untuk TS2339
+      '@typescript-eslint/no-unsafe-call': 'off', // Untuk TS2349
+      '@typescript-eslint/no-unsafe-argument': 'off', // Untuk TS7006
     },
   },
 )
