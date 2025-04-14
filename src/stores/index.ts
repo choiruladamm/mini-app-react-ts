@@ -1,21 +1,42 @@
+import cartReducer from '@/features/carts/store/cart-slice';
+import productReducer from '@/features/shops/store/product-slice';
 import taskReducer from '@/features/tasks/store/task-slice';
-import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist';
+import authReducer from '@/features/auth/store/auth-slice';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['tasks'],
+  whitelist: ['tasks', 'cart', 'auth'],
 };
 
-const persistedReducer = persistReducer(persistConfig, taskReducer);
+const rootReducer = combineReducers({
+  products: productReducer,
+  cart: cartReducer,
+  auth: authReducer,
+  tasks: taskReducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false,
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
     }),
 });
 

@@ -71,6 +71,31 @@ export const colors = {
   },
 };
 
+export const theme = {
+  colors,
+  breakpoints: {
+    mobile: '576px',
+    tablet: '768px',
+    desktop: '1024px',
+  },
+  shadows: {
+    small: '0 1px 3px rgba(0,0,0,0.1)',
+    default: '0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1)', // Changed from medium to default
+    large: '0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05)',
+  },
+  transitions: {
+    default: 'all 0.2s ease',
+    slow: 'all 0.3s ease-in-out',
+  },
+  radius: {
+    small: '4px',
+    default: '8px',
+    large: '12px',
+  },
+};
+
+export type Theme = typeof theme;
+
 const inputStyles = css`
   padding: 0.5rem 0.75rem;
   border: 1px solid ${colors.gray[200]};
@@ -191,4 +216,129 @@ export const Button = styled.button<ButtonProps>`
       background: ${colors.gray[300]};
     }
   }
+`;
+
+export const Grid = styled.div<{ columns?: string }>`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+
+  @media (min-width: ${theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: ${theme.breakpoints.desktop}) {
+    grid-template-columns: ${(props) => props.columns || 'repeat(4, 1fr)'};
+  }
+`;
+
+export const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+
+  @media (min-width: ${theme.breakpoints.tablet}) {
+    padding: 0 24px;
+  }
+`;
+
+export const PageContainer = styled.div`
+  min-height: calc(100vh - 140px);
+  padding: 20px 0;
+  animation: fadeIn 0.3s ease-out;
+`;
+
+export const Card = styled.div`
+  background-color: white;
+  border-radius: ${theme.radius.default};
+  box-shadow: ${theme.shadows.default};
+  padding: 16px;
+  transition: ${theme.transitions.default};
+`;
+
+export const ElevatedCard = styled(Card)`
+  box-shadow: ${theme.shadows.default};
+  transition: ${theme.transitions.default};
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: ${theme.shadows.large};
+  }
+`;
+
+// Common layout components
+export const CenteredContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+`;
+
+export const AuthCard = styled(Card)`
+  padding: 32px;
+  width: 100%;
+  max-width: 450px;
+`;
+
+// Image containers
+export const AspectRatioImage = styled.div`
+  position: relative;
+  padding-bottom: 100%; /* 1:1 aspect ratio */
+  overflow: hidden;
+`;
+
+export const CoverImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+`;
+
+export const Badge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 10px;
+  background-color: ${theme.colors.primary[500]};
+  color: white;
+`;
+
+export const Flex = styled.div<{
+  direction?: string;
+  justify?: string;
+  align?: string;
+  gap?: string;
+  wrap?: string;
+}>`
+  display: flex;
+  flex-direction: ${(props) => props.direction || 'row'};
+  justify-content: ${(props) => props.justify || 'flex-start'};
+  align-items: ${(props) => props.align || 'stretch'};
+  gap: ${(props) => props.gap || '0'};
+  flex-wrap: ${(props) => props.wrap || 'nowrap'};
+`;
+
+export const FormGroup = styled.div`
+  margin-bottom: 20px;
+`;
+
+export const Label = styled.label`
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: ${theme.colors.gray[700]};
+`;
+
+export const ErrorMessage = styled.p`
+  color: ${theme.colors.error.main};
+  font-size: 14px;
+  margin-top: 4px;
 `;

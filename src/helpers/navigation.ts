@@ -3,10 +3,14 @@ export const AppRoutes = {
 
   tasks: '/tasks',
 
-  stores: '/stores',
+  shop: '/shop',
+  shopProduct: '/shop/products',
+  shopDetail: (id: string | number) => `/shop/${id}`,
 
-  // exampple
-  detail: (slug: string) => `/detail/${slug}`,
+  cart: '/cart',
+
+  login: '/login',
+  register: '/register',
 
   notfound: '*',
 };
