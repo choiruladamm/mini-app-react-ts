@@ -1,5 +1,4 @@
 import { GlobalStyle } from '@/components/global-styled';
-import ReactQueryProvider from '@/providers/react-query-provider';
 import { ReduxProvider } from '@/providers/redux-provider';
 import { persistor } from '@/stores';
 import React from 'react';
@@ -12,14 +11,12 @@ const RootLayout: React.FC<RootLayoutProps> = ({}) => {
   return (
     <React.Fragment>
       <main>
-        <ReactQueryProvider>
-          <ReduxProvider>
-            <PersistGate loading={null} persistor={persistor}>
-              <GlobalStyle />
-              <Outlet />
-            </PersistGate>
-          </ReduxProvider>
-        </ReactQueryProvider>
+        <ReduxProvider>
+          <PersistGate loading={null} persistor={persistor}>
+            <GlobalStyle />
+            <Outlet />
+          </PersistGate>
+        </ReduxProvider>
       </main>
     </React.Fragment>
   );
